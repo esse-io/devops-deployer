@@ -1,0 +1,5 @@
+[cloudera]
+name=Cloudera's Distribution for Hadoop
+baseurl={{ repo_baseurl }}
+gpgkey = {{ repo_gpgkey }}
+gpgcheck = 1

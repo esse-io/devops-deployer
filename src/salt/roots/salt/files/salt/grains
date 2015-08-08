@@ -1,0 +1,31 @@
+{#
+Generat grains base on the role definition in nodes.sls
+#}
+
+{%- set rolemap = salt['pillar.get']('devops:role-map') -%}
+{%- set nodes = salt['pillar.get']('devops:nodes') -%}
+
+{%- set config = {} -%}
+
+{%- do config.update({'firstbox': ['firstbox']}) -%}
+{%- for srv_name, srv_attr in nodes.items() | sort -%}
+    {%- for rmap in rolemap.keys() -%}
+       {%- if rmap in srv_attr['roles'] -%}
+          {# {%- do srv_attr['roles'].remove(rmap) -%} #}
+          {%- for role in rolemap[rmap] -%}
+            {%- if role not in srv_attr['roles'] -%}
+              {%- do srv_attr['roles'].append(role) -%}
+            {%- endif -%}
+          {%- endfor -%}
+       {%- endif -%}
+    {%- endfor %}
+    {%- do config.update({srv_name: srv_attr['roles']}) -%}
+{% endfor %}
+
+{%- if grains['id'] in config -%}
+  {%- set roles = config[grains['id']] -%}
+roles:
+  {%- for r in roles %}
+  - {{ r }}
+  {%- endfor %}
+{%- endif -%}

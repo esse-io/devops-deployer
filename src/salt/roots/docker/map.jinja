@@ -1,0 +1,17 @@
+{% set docker = salt['grains.filter_by']({
+    'Debian': {
+        'install_script': 'install_debian.sh',
+        'service': 'docker.io',
+        'download_url': salt['pillar.get']('docker:debain_download_url'),
+        'rpm_hash': salt['pillar.get']('docker:debain_md5sum'),
+        'config_file': '/etc/default/docker',
+    },
+    'RedHat': {
+        'install_script': 'install_centos6.sh',
+        'service': 'docker',
+        'download_url': salt['pillar.get']('docker:centos_download_url'),
+        'rpm_hash': salt['pillar.get']('docker:centos_md5sum'),
+        'config_file': '/etc/sysconfig/docker',
+    },    
+}, merge=salt['pillar.get']('docker:lookup')) %}
+

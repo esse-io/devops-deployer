@@ -1,0 +1,52 @@
+dn: ou=people,dc=$host,dc=com
+ou: people
+description: All developers in organisation
+objectclass: organizationalunit
+
+dn: cn=david,ou=people,dc=$host,dc=com
+objectclass: inetOrgPerson
+cn: david
+displayName: David Geng
+sn: david
+uid: david
+userpassword: mysecret
+homephone: 555-111-2222
+mail: david@esse.io
+description: David Geng
+ou: people
+
+dn: cn=bryan,ou=people,dc=$host,dc=com
+objectclass: inetOrgPerson
+cn: bryan
+displayName: Bryan Huang
+sn: bryan
+uid: bryan
+userpassword: mysecret
+homephone: 555-111-2222
+mail: bryan@esse.io
+description: Bryan Huang
+ou: people
+
+dn: cn=mingmj,ou=people,dc=$host,dc=com
+objectclass: inetOrgPerson
+cn: mingmj
+displayName: Ming Mei Jun
+sn: mingmj
+uid: mingmj
+userpassword: mysecret
+homephone: 555-111-2222
+mail: mmeijun@$host.com
+description: Ming Mei Jun
+ou: people
+
+dn: cn=idevops-ci,ou=people,dc=$host,dc=com
+objectclass: inetOrgPerson
+cn: idevops-ci
+displayName: Continuous integration
+sn: idevops-ci
+uid: idevops-ci
+userpassword: mysecret
+homephone: 555-111-2222
+mail: idevops-ci@$host.com
+description: Continuous integration
+ou: people
