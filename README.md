@@ -39,6 +39,16 @@ $ yum install -y salt-minion
   - Update the *master* attribute in /etc/salt/minion to point to the firstbox
   - Run `salt-minion -d -l debug`
 
+
+* Install docker on firstbox
+
+We need install docker service on firstbox to setup the docker local registry.
+Before this installation you need uninstall existing docker rpm which will conflicate with this version. *And also please make sure you uninstall the docker rpm on all other nodes* 
+```
+$ wget https://get.docker.com/rpm/1.7.1/centos-6/RPMS/x86_64/docker-engine-1.7.1-1.el6.x86_64.rpm
+$ yum localinstall docker-engine-1.7.1-1.el6.x86_64.rpm
+```
+
 * Setup docker registry on firstbox:
 ```
 $ docker run -d -p 5000:5000 \
@@ -64,6 +74,7 @@ jenkins | latest | docker-registry.$host.com:5000/jenkins | latest
 
   - Build gerrit image:
 ```
+$ git clone https://github.com/idevops-net/ci.git
 $ cd ci/docker/docker-gerrit
 $ wget https://gerrit-releases.storage.googleapis.com/gerrit-2.11.2.war
 $ docker build -t docker-registry.$host.com:5000/gerrit:0.0.1 --force-rm=true ./
