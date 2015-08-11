@@ -27,6 +27,7 @@ devops:
         - hadoop-datanode
         - spark-master
         - spark-worker
+        - kafka
     bd002.$host.com:
       roles:
         - ldap
@@ -38,12 +39,14 @@ devops:
       roles:
         - hadoop-datanode
         - spark-worker
-        - zookeeper
     bd005.$host.com:
       roles:
         - hadoop-datanode
         - spark-worker
+        - zookeeper
+        - kafka
     bd006.$host.com:
       roles:
         - hadoop-datanode
         - spark-worker
+        - kafka

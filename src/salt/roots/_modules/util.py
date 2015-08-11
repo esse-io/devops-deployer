@@ -40,3 +40,14 @@ def getNodeNetworks(id=None):
                 }
                 return ret
     return {}
+
+def getLocalIpaddrs():
+    '''
+        return the ipaddr on local node.
+    '''
+    netcidr = __salt__['pillar.get']('base:networks:cidr')
+    ip_interface = __salt__['pillar.get']('base:networks:ip_interface')
+    ret = __salt__['network.ip_addrs'](interface=ip_interface, cidr=netcidr)
+    return ret
+
+

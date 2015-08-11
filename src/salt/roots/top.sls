@@ -50,3 +50,7 @@ devops:
   'roles:zookeeper':
     - match: grain
     - zookeeper
+
+  'roles:kafka':
+    - match: grain
+    - kafka

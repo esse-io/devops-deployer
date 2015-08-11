@@ -125,7 +125,7 @@ Update the pillar base on current environment, for example:
 
 * networks cidr in ```pillar/devops.sls```
 
-* firstbox_interface in ```pillar/devops.sls```
+* ip_interface in ```pillar/devops.sls```
 
 * ldap_admin_pass in ```pillar/ldap.sls```
 
@@ -209,6 +209,11 @@ $ salt -G 'roles:spark-worker' state.sls cdh.spark devops
 * Deploy Zookeeper
 ```
 $ salt -G 'roles:zookeeper' state.sls zookeeper devops
+```
+
+* Deploy Kafka
+```
+$ salt -G 'roles:kafka' state.sls kafka devops
 ```
 
 ## Post configuration

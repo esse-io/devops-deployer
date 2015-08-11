@@ -15,3 +15,4 @@ devops:
     - cdh
     - java
     - zookeeper
+    - kafka
