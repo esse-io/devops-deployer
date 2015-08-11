@@ -38,6 +38,7 @@ devops:
       roles:
         - hadoop-datanode
         - spark-worker
+        - zookeeper
     bd005.$host.com:
       roles:
         - hadoop-datanode

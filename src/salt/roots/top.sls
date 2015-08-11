@@ -46,3 +46,7 @@ devops:
   'roles:spark-worker':
     - match: grain
     - cdh.spark
+
+  'roles:zookeeper':
+    - match: grain
+    - zookeeper

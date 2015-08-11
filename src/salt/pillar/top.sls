@@ -14,3 +14,4 @@ devops:
     - jenkins
     - cdh
     - java
+    - zookeeper

@@ -97,6 +97,26 @@ Local Registry Image                              | Tag
 --------------------------------------------------|-------
 docker-registry.$host.com:5000/jenkins           | 0.0.1
 
+  - Build zookeeper image:
+```
+$ cd ci/docker/docker-zookeeper
+$ docker build -t docker-registry.$host.com:5000/zookeeper:0.0.1 --force-rm=true ./
+$ docker push docker-registry.$host.com:5000/zookeeper:0.0.1
+```
+Local Registry Image                              | Tag
+--------------------------------------------------|-------
+docker-registry.$host.com:5000/zookeeper | 0.0.1
+
+  - Build kafka image:
+```
+$ cd ci/docker/docker-kafka
+$ docker build -t docker-registry.$host.com:5000/kafak:0.0.1 --force-rm=true ./
+$ docker push docker-registry.$host.com:5000/kafka:0.0.1
+```
+Local Registry Image                              | Tag
+--------------------------------------------------|-------
+docker-registry.$host.com:5000/kafka | 0.0.1
+
 ## Configuration
 
 Update the pillar base on current environment, for example:
@@ -144,6 +164,8 @@ $ salt '*' service.restart docker
 $ salt '*' saltutil.refresh_pillar
 $ salt '*' saltutil.sync_modules
 $ salt '*' state.sls salt devops
+Note: after run the above command you need hold on 1 minute at least until salt minion restart finish on all the nodes.
+
 $ salt -G 'roles:firstbox' state.sls firstbox devops
 $ salt '*' state.sls salt,docker,ssl-key devops
 ```
@@ -182,6 +204,11 @@ $ salt -G 'roles:hadoop-datanode' state.sls cdh.hdfs devops
 ```
 $ salt -G 'roles:spark-master' state.sls cdh.spark,cdh.hive devops
 $ salt -G 'roles:spark-worker' state.sls cdh.spark devops
+```
+
+* Deploy Zookeeper
+```
+$ salt -G 'roles:zookeeper' state.sls zookeeper devops
 ```
 
 ## Post configuration
