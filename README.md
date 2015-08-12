@@ -277,7 +277,4 @@ spark://<your spark master ip>:7077 \
   - Run ```salt-run manage.status``` to check the salt client status.
   - Run ```salt -G 'roles:ldap' test.ping``` to check minion's status.
   - Run ```salt-key -d bd003.$host.com``` to delete unnecessary minion
-
-
-
-
+  - Run ```salt -G 'roles:kafka' cmd.run 'docker stop kafka'``` to stop kafka container

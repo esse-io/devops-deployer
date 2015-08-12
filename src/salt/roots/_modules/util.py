@@ -1,4 +1,5 @@
 from netaddr import IPNetwork, IPAddress
+import random
 import logging
 log = logging.getLogger(__name__)
 
@@ -50,4 +51,10 @@ def getLocalIpaddrs():
     ret = __salt__['network.ip_addrs'](interface=ip_interface, cidr=netcidr)
     return ret
 
-
+def get_random_id():
+    '''
+        return a random integer id and make sure it is unique
+    '''
+    random.seed()
+    return random.randint(0, 1000)
+    pass

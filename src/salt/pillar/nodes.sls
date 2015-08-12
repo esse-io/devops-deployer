@@ -39,12 +39,12 @@ devops:
       roles:
         - hadoop-datanode
         - spark-worker
+        - zookeeper
+        - kafka
     bd005.$host.com:
       roles:
         - hadoop-datanode
         - spark-worker
-        - zookeeper
-        - kafka
     bd006.$host.com:
       roles:
         - hadoop-datanode

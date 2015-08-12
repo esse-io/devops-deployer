@@ -1,4 +1,4 @@
-{%- set docker_image = salt['pillar.get']('docker:registry') + '/zookeeper' -%}
+{%- set docker_image = salt['pillar.get']('docker:registry') + '/kafka' -%}
 {%- set image_version = salt['pillar.get']('kafka:image_version') -%}
 {%- set broker_port = salt['pillar.get']('kafka:broker_port')|int -%}
 {%- set jmx_port = salt['pillar.get']('kafka:jmx_port')|int -%}
@@ -6,11 +6,11 @@
 {%- set vol_log = salt['pillar.get']('kafka:log_volume') -%}
 {%- set get_net_info = salt['util.getNodeNetworks'] -%}
 {%- set get_local_ip = salt['util.getLocalIpaddrs'] -%}
+{%- set get_random_id = salt['util.get_random_id'] -%}
 {%- set exposed_ip = get_local_ip()[0] -%}
 {%- set zookeeper_ip_dict = salt['mine.get']('roles:zookeeper', 'grains.item', expr_form='grain') -%}
 {%- set zoo_port = salt['pillar.get']('zookeeper:client_port') -%}
 {%- set zoo_number = salt['pillar.get']('zookeeper:node_number')|int -%}
-{%- set broker_id = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] -%}
 {%- if zookeeper_ip_dict | length !=0 %}
 {%- set zoo_ip = get_net_info(zookeeper_ip_dict.keys()[0])['ipaddr'] %}
 {%- else -%}
@@ -49,7 +49,7 @@ kafka.run:
         'EXPOSED_HOST': {{ exposed_ip }}
         'EXPOSED_PORT': {{ broker_port }}
         'ZOOKEEPER_URL': {{ zoo_url|join(',') }}
-        'BROKER_ID': {{ broker_id|random() }}
+        'BROKER_ID': {{ get_random_id() }}
         'BRANCH': master
     - volumes:
       - {{ vol_data }}: /data
