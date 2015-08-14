@@ -167,7 +167,7 @@ $ salt '*' state.sls salt devops
 Note: after run the above command you need hold on 1 minute at least until salt minion restart finish on all the nodes.
 
 $ salt -G 'roles:firstbox' state.sls firstbox devops
-$ salt '*' state.sls salt,docker,ssl-key devops
+$ salt '*' state.sls salt,docker,ssl-key,ssh-key devops
 ```
 
 * Deploy java
@@ -232,11 +232,11 @@ The Gitlab will require you to change the default password.
 ```
 $ ldapadd -h localhost -x -D "cn=admin,dc=$host,dc=com" -f ldap.ldif -W
 ```
-  - You can login the [Ldap web admin page](https://bd003.$host.com:11443) to change your password, the login DN should be like: *cn=david,ou=people,dc=$host,dc=com*, the login DN of admin should be like: *cn=admin,dc=$host,dc=com*.
+  - You can login the [Ldap web admin page](https://bd002.$host.com:11443) to change your password, the login DN should be like: *cn=david,ou=people,dc=$host,dc=com*, the login DN of admin should be like: *cn=admin,dc=$host,dc=com*.
 
 * Create gerrit admin account:
   - After the gerrit container deploy, you need login the [Gerrit web admin page](http://bd002.$host.com:28080) with the 'idevops-ci' user account and password in ldap, it will be added into the gerrit administrator group since it's the first login user.
-  - Add 'idevops-ci' ssh public key into gerrit, you can find it under the ```bd003.$host.com:/data/ssh_keys```
+  - Add 'idevops-ci' ssh public key into gerrit, you can find it under the ```bd002.$host.com:/data/ssh_keys```
 
 * Enable ldap based authentication in jenkins Configure Global Security
   - Follow this guid to enable it: [LDAP plugin](https://wiki.jenkins-ci.org/display/JENKINS/LDAP+Plugin)
@@ -264,7 +264,7 @@ spark://<your spark master ip>:7077 \
 
 ## Useful Link after deployment:
 
-* <a href="https://bd003.$host.com:11443/" target="_blank">Ldap web admin</a>
+* <a href="https://bd002.$host.com:11443/" target="_blank">Ldap web admin</a>
 * <a href="https://bd003.$host.com:10443/" target="_blank">Gitlab web UI</a>
 * <a href="http://bd003.$host.com:28080/" target="_blank">Gerrit web UI</a>
 * <a href="http://bd002.$host.com:18080/jenkins" target="_blank">Jenkins web UI</a>
