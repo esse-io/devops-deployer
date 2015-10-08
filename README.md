@@ -237,6 +237,16 @@ $ ldapadd -h localhost -x -D "cn=admin,dc=$host,dc=com" -f ldap.ldif -W
 * Create gerrit admin account:
   - After the gerrit container deploy, you need login the [Gerrit web admin page](http://bd002.$host.com:28080) with the 'idevops-ci' user account and password in ldap, it will be added into the gerrit administrator group since it's the first login user.
   - Add 'idevops-ci' ssh public key into gerrit, you can find it under the ```bd002.$host.com:/data/ssh_keys```
+  - Import an existing git project into gerrit
+    + First you need create a new project in gerrit, do not select *Create initial empty commit* and *Only serve as parent for other projects*
+    + git clone your existing project from github, for example *git clone git@github.com:idevops-net/devopes-developer.git*
+    + Run the following commands to push your project into gerrit:
+```
+$ eval $(ssh-agent)
+$ ssh-add /data/ssh_keys/ci_rsa
+$ git push ssh://idevops-ci@bd002.$host.com:29418/${REPO_PROJECT} HEAD:refs/heads/master
+$ kill ${SSH_AGENT_PID}
+```
 
 * Enable ldap based authentication in jenkins Configure Global Security
   - Follow this guid to enable it: [LDAP plugin](https://wiki.jenkins-ci.org/display/JENKINS/LDAP+Plugin)

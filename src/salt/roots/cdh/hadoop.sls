@@ -12,6 +12,13 @@
 {%- set nn_ip = '' %}
 {%- endif -%}
 
+{%- set oozie_ip_dict = salt['mine.get']('roles:oozie-server', 'grains.item', expr_form='grain') -%}
+{%- if oozie_ip_dict | length !=0 %}
+{%- set oozie_ip = get_net_info(oozie_ip_dict.keys()[0])['ipaddr'] %}
+{%- else -%}
+{%- set oozie_ip = '' %}
+{%- endif -%}
+
 include:
   - cdh.repo
   - java
@@ -63,6 +70,24 @@ cdh.java.configure:
       - pkg: cdh.namenode.install
       {% endif %}
 
+cdh.yarn.configure:
+  file.managed:
+    - name: /etc/hadoop/conf/yarn-site.xml
+    - source: salt://cdh/files/yarn-site.xml
+    - template: jinja
+    - user: yarn
+    - group: yarn
+    - mode: 644
+    - context:
+      resourcemanager_host: {{ nn_ip }}
+    - require:
+      {% if 'hadoop-datanode' in grains['roles'] %}
+      - pkg: cdh.datanode.install
+      {% endif -%}
+      {% if 'hadoop-namenode' in grains['roles'] %}
+      - pkg: cdh.namenode.install
+      {% endif %}
+
 cdh.hdfs.configure:
   file.managed:
     - name: /etc/hadoop/conf/hdfs-site.xml
@@ -89,6 +114,7 @@ cdh.core.configure:
     - context:
       namenode_host: {{ nn_ip }}
       namenode_port: {{ nn_rpc_port }}
+      oozie_host: {{ oozie_ip }}
     - require:
       {% if 'hadoop-datanode' in grains['roles'] %}
       - pkg: cdh.datanode.install
@@ -122,6 +148,30 @@ cdh.datanode.service:
       {% if 'hadoop-namenode' in grains['roles'] %}
       - service: cdh.namenode.service
       {% endif %}
+    - watch:
+      - file: cdh.core.configure
+      - file: cdh.hdfs.configure
+      - file: cdh.yarn.configure
+cdh.yarn.nodemanager.service:
+  service.running:
+    - name: hadoop-yarn-nodemanager
+    - enable: True
+    - restart: True
+    - watch:
+      - file: cdh.yarn.configure
+    - require:
+      - pkg: cdh.datanode.install
+      - file: cdh.core.configure
+      - file: cdh.hdfs.configure
+      - file: cdh.java.configure
+      - file: cdh.yarn.configure
+      {% if 'hadoop-namenode' in grains['roles'] %}
+      - service: cdh.yarn.resourcemanager.service
+      {% endif %}
+    - watch:
+      - file: cdh.core.configure
+      - file: cdh.hdfs.configure
+      - file: cdh.yarn.configure
 {% endif %}
 
 {% if 'hadoop-namenode' in grains['roles'] %}
@@ -153,4 +203,18 @@ cdh.namenode.service:
     - restart: True
     - require:
       - cmd: cdh.namenode.format
+    - watch:
+      - file: cdh.core.configure
+      - file: cdh.hdfs.configure
+
+cdh.yarn.resourcemanager.service:
+  service.running:
+    - name: hadoop-yarn-resourcemanager
+    - enable: True
+    - restart: True
+    - require:
+      - cmd: cdh.namenode.format
+    - watch:
+      - file: cdh.core.configure
+      - file: cdh.hdfs.configure
 {% endif %}

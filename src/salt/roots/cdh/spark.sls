@@ -1,11 +1,16 @@
 {%- set java_home      = salt['grains.get']('java_home', salt['pillar.get']('java_home', '/usr/lib/java')) %}
 {%- set get_net_info = salt['util.getNodeNetworks'] -%}
 
-{%- set master_ip_dict = salt['mine.get']('roles:spark-master', 'grains.item', expr_form='grain') -%}
-{%- if master_ip_dict | length !=0 %}
-{%- set master_ip = get_net_info(master_ip_dict.keys()[0])['ipaddr'] %}
+{%- set spark_master_host = salt['pillar.get']('cdh:spark_master_host')-%}
+{%- if spark_master_host != '' -%}
+  {%- set master_ip = spark_master_host -%}
 {%- else -%}
-{%- set master_ip = '' %}
+  {%- set master_ip_dict = salt['mine.get']('roles:spark-master', 'grains.item', expr_form='grain') -%}
+  {%- if master_ip_dict | length !=0 %}
+    {%- set master_ip = get_net_info(master_ip_dict.keys()[0])['ipaddr'] %}
+  {%- else -%}
+    {%- set master_ip = '' %}
+  {%- endif -%}
 {%- endif -%}
 
 include:

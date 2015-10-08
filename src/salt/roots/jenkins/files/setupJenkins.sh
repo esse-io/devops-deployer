@@ -13,7 +13,8 @@ JENKINS_WEBURL={{ jenkins_weburl }}
 NEXUS_REPO={{ nexus_repo }}
 
 #create ssh key.
-docker exec {{ jenkins_container }} [ -f /var/jenkins_home/.ssh/id_rsa ] || ssh-keygen -q -N '' -t rsa  -f /var/jenkins_home/.ssh/id_rsa
+docker exec {{ jenkins_container }} [ -d /var/jenkins_home/.ssh ] || docker exec {{ jenkins_container }} mkdir -p /var/jenkins_home/.ssh
+docker exec {{ jenkins_container }} [ -f /var/jenkins_home/.ssh/id_rsa ] || docker exec {{ jenkins_container }} ssh-keygen -q -N '' -t rsa  -f /var/jenkins_home/.ssh/id_rsa
 
 #gather server rsa key
 ##TODO: This is not an elegant way.

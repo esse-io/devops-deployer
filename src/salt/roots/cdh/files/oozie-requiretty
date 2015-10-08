@@ -1,0 +1,3 @@
+oozie    ALL=(ALL)    NOPASSWD:/usr/bin/oozie-setup
+
+Defaults:oozie !requiretty

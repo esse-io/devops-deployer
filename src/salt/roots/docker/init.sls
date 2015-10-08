@@ -1,10 +1,15 @@
 {%- from "docker/map.jinja" import docker with context %}
 {%- set docker_registry = salt['pillar.get']('docker:registry') -%}
+wget:
+  pkg.installed
+
 docker-rpm:
   file.managed:
     - name: /tmp/docker.rpm
     - source: {{ docker.download_url }}
     - source_hash: {{ docker.rpm_hash }}
+    - require:
+      - pkg: wget
 
 {#
 docker-pkgs:

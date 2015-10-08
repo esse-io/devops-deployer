@@ -11,13 +11,17 @@ devops:
       - 'redis'
       - 'gerrit'
     'hadoop-namenode':
-      - 'cdh.hdfs'
+      - 'cdh.hadoop'
     'hadoop-datanode':
-      - 'cdh.hdfs'
+      - 'cdh.hadoop'
     'spark-master':
       - 'cdh.spark'
     'spark-worker':
       - 'cdh.spark'
+    'oozie-client':
+      - 'oozie'
+    'oozie-server':
+      - 'oozie'
   nodes:
     bd001.$host.com:
       roles:
@@ -28,15 +32,18 @@ devops:
         - spark-master
         - spark-worker
         - kafka
+        - logstash-server
+        - oozie-client
     bd002.$host.com:
       roles:
         - ldap
         - git
-        - jenkins
         - hadoop-datanode
         - spark-worker
+        - sqoop
     bd003.$host.com:
       roles:
+        - jenkins
         - hadoop-datanode
         - spark-worker
         - zookeeper
@@ -45,8 +52,9 @@ devops:
       roles:
         - hadoop-datanode
         - spark-worker
+        - kafka
     bd006.$host.com:
       roles:
         - hadoop-datanode
         - spark-worker
-        - kafka
+        - oozie-server

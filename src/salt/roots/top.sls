@@ -33,11 +33,11 @@ devops:
 
   'roles:hadoop-namenode':
     - match: grain
-    - cdh.hdfs
+    - cdh.hadoop
 
   'roles:hadoop-datanode':
     - match: grain
-    - cdh.hdfs
+    - cdh.hadoop
 
   'roles:spark-master':
     - match: grain
@@ -54,3 +54,15 @@ devops:
   'roles:kafka':
     - match: grain
     - kafka
+
+  'roles:logstash-server':
+    - match: grain
+    - logstash-server
+
+  'roles:oozie-client':
+    - match: grain
+    - oozie
+
+  'roles:oozie-server':
+    - match: grain
+    - oozie

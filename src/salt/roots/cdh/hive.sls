@@ -30,6 +30,7 @@ cdh.hive.jdbc:
   cmd.run:
     - name: wget {{ jdbc_url }}/{{ jdbc_jar }}
     - cwd: /usr/lib/hive/lib/
+    - unless: test -f /usr/lib/hive/lib/{{ jdbc_jar }}
 
 cdh.hive.postgresql:
   cmd.run:

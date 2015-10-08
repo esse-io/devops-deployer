@@ -70,13 +70,14 @@ gitlab.run:
     - name: gitlab
     - image: {{ docker_image }}:{{ image_version }}
     - ports:
-      - 443/tcp: 
+      - 443/tcp:
           HostIp: ""
           HostPort: {{ ssl_port }}
-      - 22/tcp: 
+      - 22/tcp:
           HostIp: ""
           HostPort: {{ ssh_port }}
     - environment:
+        'GITLAB_RELATIVE_URL_ROOT': /gitlab
         'GITLAB_HOST': {{ gitlab_ip }}
         'GITLAB_PORT': {{ ssl_port }}
         'GITLAB_SSH_PORT': {{ ssh_port }}
@@ -105,4 +106,4 @@ gitlab.run:
       - sls: postgresql
       - sls: redis
       - docker: gitlab.image
-      - file: {{ vol_data }}/certs
+      - file: {{ vol_data }}/certs/{{ key_file }}

@@ -3,6 +3,8 @@ postgresql:
   image_version: 9.4-2
   port: 5432
   container_name: postgresql-gitlab
+  oozie_db_name: oozie
+  zen-web_db_name: zenweb
   sharpen_db_name: sharpen
   hive_db_name: hive_meta
   gerrit_db_name: gerrit

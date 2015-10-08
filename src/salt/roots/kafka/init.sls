@@ -11,6 +11,7 @@
 {%- set zookeeper_ip_dict = salt['mine.get']('roles:zookeeper', 'grains.item', expr_form='grain') -%}
 {%- set zoo_port = salt['pillar.get']('zookeeper:client_port') -%}
 {%- set zoo_number = salt['pillar.get']('zookeeper:node_number')|int -%}
+{%- set log_topic = salt['pillar.get']('kafka:topic_logs') -%}
 {%- if zookeeper_ip_dict | length !=0 %}
 {%- set zoo_ip = get_net_info(zookeeper_ip_dict.keys()[0])['ipaddr'] %}
 {%- else -%}
@@ -56,3 +57,11 @@ kafka.run:
       - {{ vol_log }}: /logs
     - require:
       - docker: kafka.image
+
+kafka.post-config:
+  docker.run:
+    - name: kafka-topics.sh --create --topic {{ log_topic }} --replication-factor 3 --partitions 10 --zookeeper $ZOOKEEPER_URL/kafka_v0_8_2
+    - cid: kafka
+    - docked_unless: kafka-topics.sh --list --zookeeper $ZOOKEEPER_URL/kafka_v0_8_2 |grep {{ log_topic }}
+    - require:
+      - docker: kafka.run

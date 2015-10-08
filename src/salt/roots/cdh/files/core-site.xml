@@ -21,4 +21,30 @@
     <name>fs.defaultFS</name>
     <value>hdfs://{{ namenode_host }}:{{ namenode_port }}</value>
   </property>
+  <property>
+    <name>hadoop.proxyuser.oozie.hosts</name>
+    <value>{{ oozie_host }}</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.oozie.groups</name>
+    <value>oozie</value>
+  </property>
+  <property>
+      <name>mapreduce.jobtracker.kerberos.principal</name>
+      <value>mapred/_HOST@LOCALREALM</value>
+  </property>
+  <property>
+    <name>yarn.resourcemanager.principal</name>
+    <value>yarn/_HOST@LOCALREALM</value>
+  </property>
+
+  <property>
+      <name>dfs.namenode.kerberos.principal</name>
+      <value>hdfs/_HOST@LOCALREALM</value>
+  </property>
+
+  <property>
+      <name>mapreduce.framework.name</name>
+      <value>yarn</value>
+  </property>
 </configuration>

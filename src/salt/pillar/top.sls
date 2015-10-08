@@ -16,3 +16,6 @@ devops:
     - java
     - zookeeper
     - kafka
+    - spark
+    - supervisord
+    - logstash

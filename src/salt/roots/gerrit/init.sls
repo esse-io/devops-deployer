@@ -12,10 +12,13 @@
 {%- set db_name = salt['pillar.get']('postgresql:gerrit_db_name') -%}
 {%- set ldap_dn = salt['pillar.get']('base:domain_name').split('.') -%}
 {%- set gerrit_weburl = salt['pillar.get']('base:gerrit_weburl', '') -%}
+{%- set httpd_listenurl = salt['pillar.get']('base:gerrit_httpd_listenurl', '') -%}
+{%- set gitlab_ssh_port = salt['pillar.get']('gitlab:ssh_port') -%}
 {%- set get_net_info = salt['util.getNodeNetworks'] -%}
 
 {%- set ldap_ip_dict = salt['mine.get']('roles:ldap-server', 'grains.item', expr_form='grain') -%}
 {%- set gerrit_ip_dict = salt['mine.get']('roles:gerrit', 'grains.item', expr_form='grain') -%}
+{%- set gitlab_ip_dict = salt['mine.get']('roles:gitlab', 'grains.item', expr_form='grain') -%}
 
 {%- if ldap_ip_dict | length !=0 %}
 {%- set ldap_ip = get_net_info(ldap_ip_dict.keys()[0])['ipaddr'] %}
@@ -27,6 +30,12 @@
 {%- set gerrit_ip = get_net_info(gerrit_ip_dict.keys()[0])['ipaddr'] %}
 {%- else -%}
 {%- set gerrit_ip = '' %}
+{%- endif -%}
+
+{%- if gitlab_ip_dict | length !=0 %}
+{%- set gitlab_ip = get_net_info(gitlab_ip_dict.keys()[0])['ipaddr'] %}
+{%- else -%}
+{%- set gitlab_ip = '' %}
 {%- endif -%}
 
 include:
@@ -54,10 +63,13 @@ gerrit.run:
           HostIp: ""
           HostPort: {{ ssh_port }}
     - environment:
-        {% if gerrit_weburl == '' %}
+        {%- if gerrit_weburl == '' %}
         'WEBURL': http://{{ gerrit_ip }}:{{ httpd_port }}
         {% else %}
         'WEBURL': {{ gerrit_weburl }}
+        {% endif %}
+        {%- if httpd_listenurl != '' %}
+        'HTTPD_LISTENURL': {{ httpd_listenurl }}
         {% endif %}
         'DATABASE_TYPE': 'postgresql'
         'DB_ENV_DB_NAME': {{ db_name }}
@@ -69,8 +81,10 @@ gerrit.run:
         'LDAP_ACCOUNTEMAILADDRESS': 'mail'
         'LDAP_REFERRAL': 'follow'
         'REPLICATE_ENABLED': 'true'
-        'REPLICATE_USER': {{ replcate_user }}
+        'REPLICATE_USER': git
         'REPLICATE_KEY': {{ replicate_key_name }}
+        'REPLICATE_SERVER': {{ gitlab_ip }}
+        'RP_SERVER_PORT': {{ gitlab_ssh_port }}
     - volumes:
       - {{ vol_data }}: /home/git/data
     - volumes:
