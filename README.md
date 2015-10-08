@@ -12,11 +12,11 @@
 
 * Log file connector
 
-![Log file connector diagram](images/20150812_$host_log-connector.png)
+![Log file connector diagram](images/20150812_log-connector.png)
 
 * MySQL database connector
 
-![Sqoop connector diagram](images/20150702_$host_data_platform_data_import.png)
+![Sqoop connector diagram](images/20150702_data_platform_data_import.png)
 
 ## Prerequisite
 
