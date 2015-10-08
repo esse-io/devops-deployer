@@ -1,8 +1,32 @@
 # EL BigData Platform Environment Deployer
 
+## Architecture design
+
+* Data platform architecture
+
+![Architecture diagram](images/20150912_dataplatform.png)
+
+* Gerrit review system
+
+![gerrit review diagram](images/20150815_gerrit.png)
+
+* Log file connector
+
+![Log file connector diagram](images/20150812_$host_log-connector.png)
+
+* MySQL database connector
+
+![Sqoop connector diagram](images/20150702_$host_data_platform_data_import.png)
+
 ## Prerequisite
 
 * Hardware and OS
+
+* Setup ntp server and sync the system clock on all the machines in your env
+
+Following doc may help you to setup ntp server and ntp client
+  - <a href="http://zh888.blog.51cto.com/1684752/1244772" target="_blank">centos NTP server setup</a>
+  - <a href="http://www.thegeekstuff.com/2014/06/linux-ntp-server-client/" target="_blank">How to Install and Configure Linux NTP Server and Client</a>
 
 * Install and configure the salt-master on fistbox
   - Install salt master:
@@ -39,6 +63,14 @@ $ yum install -y salt-minion
   - Update the *master* attribute in /etc/salt/minion to point to the firstbox
   - Run `salt-minion -d -l debug`
 
+* stop salt-master iptables
+  $service iptables stop
+  $chkconfig iptables off
+  $chkconfig --list|grep iptables
+
+* manager authentication key
+  $salt-key -L
+  $salt-key -A or $salt-key -a #minionid#
 
 * Install docker on firstbox
 
@@ -66,11 +98,12 @@ $ docker run -d -p 5000:5000 \
 Docker Hub Image    |  Tage    | Local Registry Image                              | Tag
 --------------------|----------|---------------------------------------------------|-------
 osixia/phpldapadmin | latest   | docker-registry.$host.com:5000/phpldapadmin     | latest
-nickstenning/slapd | latest | docker-registry.$host.com:5000/sladp | latest
+nickstenning/slapd | latest | docker-registry.$host.com:5000/slapd | latest
 sameersbn/postgresql | 9.4-2 | docker-registry.$host.com:5000/postgresql | 9.4-2
 sameersbn/redis | latest | docker-registry.$host.com:5000/redis | latest
 sameersbn/gitlab | 7.13.0 | docker-registry.$host.com:5000/gitlab | 7.13.0
 jenkins | latest | docker-registry.$host.com:5000/jenkins | latest
+logstash | 1.5.4-1 | docker-registry.$host.com:5000/logstash | 1.5.4-1
 
   - Build gerrit image:
 ```
@@ -110,7 +143,7 @@ docker-registry.$host.com:5000/zookeeper | 0.0.1
   - Build kafka image:
 ```
 $ cd ci/docker/docker-kafka
-$ docker build -t docker-registry.$host.com:5000/kafak:0.0.1 --force-rm=true ./
+$ docker build -t docker-registry.$host.com:5000/kafka:0.0.1 --force-rm=true ./
 $ docker push docker-registry.$host.com:5000/kafka:0.0.1
 ```
 Local Registry Image                              | Tag
@@ -196,14 +229,20 @@ $ salt -G 'roles:jenkins' state.sls jenkins devops
 
 * Deploy Hadoop
 ```
-$ salt -G 'roles:hadoop-namenode' state.sls cdh.hdfs devops
-$ salt -G 'roles:hadoop-datanode' state.sls cdh.hdfs devops
+$ salt -G 'roles:hadoop-namenode' state.sls cdh.hadoop devops
+$ salt -G 'roles:hadoop-datanode' state.sls cdh.hadoop devops
+```
+
+* Deploy sqoop 
+ notice: create sqoop job must in piller file modifiy databases connectoin  and  name,password        
+```
+$salt -G "roles:sqoop"  state.sls  cdh.sqoop devops
 ```
 
 * Deploy Spark and configure Hive
 ```
-$ salt -G 'roles:spark-master' state.sls cdh.spark,cdh.hive devops
-$ salt -G 'roles:spark-worker' state.sls cdh.spark devops
+$ salt -G 'roles:spark-master' state.sls apach-spark devops
+$ salt -G 'roles:spark-worker' state.sls apach-spark devops
 ```
 
 * Deploy Zookeeper
@@ -216,16 +255,18 @@ $ salt -G 'roles:zookeeper' state.sls zookeeper devops
 $ salt -G 'roles:kafka' state.sls kafka devops
 ```
 
+* Deploy logstash server
+```
+$ salt -G 'roles:logstash-server' state.sls logstash-server devops
+```
+
+* Deploy oozie
+```
+$ salt -G 'roles:oozie-client' state.sls cdh.oozie devops
+$ salt -G 'roles:oozie-server' state.sls cdh.oozie devops
+```
+
 ## Post configuration
-
-* Change the Gitlab default password of root user
-
-Point your browser to [Gitlab](https://bd003.$host.com:10443/) and login using the default username and password:
-
-    username: root
-    password: 5iveL!fe
-
-The Gitlab will require you to change the default password.
 
 * Create organization memeber:
   - Create ldap.ldif, you can reference the [ldap.ldif.example](src/scripts/ldap.ldif.example) as an example, and run command to initialize the organization memebers on *bd003*
@@ -234,8 +275,21 @@ $ ldapadd -h localhost -x -D "cn=admin,dc=$host,dc=com" -f ldap.ldif -W
 ```
   - You can login the [Ldap web admin page](https://bd002.$host.com:11443) to change your password, the login DN should be like: *cn=david,ou=people,dc=$host,dc=com*, the login DN of admin should be like: *cn=admin,dc=$host,dc=com*.
 
+* Change the Gitlab default password of root user
+
+  - Point your browser to [Gitlab](https://bd003.$host.com:10443/) and login using the default username and password:
+```
+      username: root
+      password: 5iveL!fe
+```
+  The Gitlab will require you to change the default password.
+
+  - You need login the [Gitlab web admin page](https://bd002.$host.com:11443) with the 'idevops-ci@$host.com' user and account and password in ldap, and add 'idevops-ci' ssh public key into gitlab, you can find it under the ```bd002.$host.com:/data/ssh_keys```
+  - Create *el-bigdata* group in gitlab, assign the 'master' role to 'idevops-ci' account.
+  - Create projects under *el-bigdata*
+
 * Create gerrit admin account:
-  - After the gerrit container deploy, you need login the [Gerrit web admin page](http://bd002.$host.com:28080) with the 'idevops-ci' user account and password in ldap, it will be added into the gerrit administrator group since it's the first login user.
+  - After the gerrit container deploy, you need login the [Gerrit web admin page](http://bd002.$host.com:28080) with the 'idevops-ci@$host.com' user account and password in ldap, it will be added into the gerrit administrator group since it's the first login user.
   - Add 'idevops-ci' ssh public key into gerrit, you can find it under the ```bd002.$host.com:/data/ssh_keys```
   - Import an existing git project into gerrit
     + First you need create a new project in gerrit, do not select *Create initial empty commit* and *Only serve as parent for other projects*
@@ -250,6 +304,13 @@ $ kill ${SSH_AGENT_PID}
 
 * Enable ldap based authentication in jenkins Configure Global Security
   - Follow this guid to enable it: [LDAP plugin](https://wiki.jenkins-ci.org/display/JENKINS/LDAP+Plugin)
+    + According to the current environment, the ldap related info should be like following:
+    ```
+    server: ldap://bd002.$host.com
+    root DN: dc=$host,dc=com
+    User search base: ou=people
+    user server filter: mail={0}
+    ```
   - And only allow authorized user to access jenkins.
 
 * Create Hive warehouse in HDFS
@@ -257,18 +318,18 @@ $ kill ${SSH_AGENT_PID}
 Run following commands on your firstbox to create tmp and warehouse in HDFS for Hive.
 ```
 $ hadoop fs -mkdir       /tmp
-$ hadoop fs -mkdir       /user/hive/warehouse
+$ hadoop fs -mkdir -p    /user/hive/warehouse
 $ hadoop fs -chmod g+w   /tmp
 $ hadoop fs -chmod g+w   /user/hive/warehouse
 ```
 
 * Start Spark SQL Thrift Server
 
-Run following command on your firstbox to start the thrift server, the total of executor cores *--total-executor-cores* is according to your spark cluster environment, you need provide a vaild number to avoid the spark jobs can not acquire enough resources from culster to run.
+Run following command on the node which is running the spark master to start the thrift server, the total of executor cores *--total-executor-cores* is according to your spark cluster environment, you need provide a vaild number to avoid the spark jobs can not acquire enough resources from culster to run.
 ```
-$ /usr/lib/spark/sbin/start-thriftserver.sh \
+$ sudo -u spark /usr/lib/spark/sbin/start-thriftserver.sh \
 spark://<your spark master ip>:7077 \
---hiveconf "hive.metastore.warehouse.dir=hdfs://<your hdfs namenode>:9000/user/hive/warehouse" \
+--hiveconf "hive.metastore.warehouse.dir=hdfs://<your hdfs namenode>:50070/user/hive/warehouse" \
 --total-executor-cores 20
 ```
 
