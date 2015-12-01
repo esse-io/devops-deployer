@@ -278,16 +278,16 @@ $ salt -G 'roles:oozie-server' state.sls cdh.oozie devops
 
 ## Post Configuration
 
-* Create organization member:
-Create ldap.ldif, you can reference the [ldap.ldif.example](src/scripts/ldap.ldif.example) as an example, and run command to initialize the organization memebers on *bd003*
+### LDAP
+* Create organization member
+Create ldap.ldif, you can reference the [ldap.ldif.example](src/scripts/ldap.ldif.example) as an example, and run command to initialize the organization members on *bd003*
 ```
 $ ldapadd -h localhost -x -D "cn=admin,dc=$host,dc=com" -f ldap.ldif -W
 ```
   - You can login the [LDAP web admin page](https://bd002.$host.com:11443) to change your password, the login DN should be like: ```*cn=david,ou=people,dc=$host,dc=com*```, the login DN of admin should be like: ```*cn=admin,dc=$host,dc=com*```
 
-* Change the Gitlab default password of root user
-
-  - Point your browser to [Gitlab](https://bd003.$host.com:10443/) and login using the default username and password:
+### Gitlab
+* Change the Gitlab default password of root user. Point your browser to [Gitlab](https://bd003.$host.com:10443/) and login using the default username and password:
 ```
       username: root
       password: 5iveL!fe
@@ -298,7 +298,8 @@ $ ldapadd -h localhost -x -D "cn=admin,dc=$host,dc=com" -f ldap.ldif -W
   - Create *el-bigdata* group in gitlab, assign the 'master' role to 'idevops-ci' account.
   - Create projects under *el-bigdata*
 
-* Create gerrit admin account:
+### Gerrit
+Create gerrit admin account:
   - After the gerrit container deploy, you need login the [Gerrit web admin page](http://bd002.$host.com:28080) with the 'idevops-ci@$host.com' user account and password in ldap, it will be added into the gerrit administrator group since it's the first login user.
   - Add 'idevops-ci' ssh public key into gerrit, you can find it under the ```bd002.$host.com:/data/ssh_keys```
   - Import an existing git project into gerrit
@@ -312,7 +313,8 @@ $ git push ssh://idevops-ci@bd002.$host.com:29418/${REPO_PROJECT} HEAD:refs/head
 $ kill ${SSH_AGENT_PID}
 ```
 
-* Enable ldap based authentication in jenkins Configure Global Security
+### Jenkins
+Enable ldap based authentication in jenkins Configure Global Security
   - Follow this guid to enable it: [LDAP plugin](https://wiki.jenkins-ci.org/display/JENKINS/LDAP+Plugin)
     + According to the current environment, the ldap related info should be like following:
     ```
@@ -323,7 +325,7 @@ $ kill ${SSH_AGENT_PID}
     ```
   - And only allow authorized user to access jenkins.
 
-* Create Hive warehouse in HDFS
+### Create Hive Warehouse in HDFS
 
 Run following commands on your firstbox to create tmp and warehouse in HDFS for Hive.
 ```
@@ -333,9 +335,9 @@ $ hadoop fs -chmod g+w   /tmp
 $ hadoop fs -chmod g+w   /user/hive/warehouse
 ```
 
-* Start Spark SQL Thrift Server
+### Start Spark SQL Thrift Server
 
-Run following command on the node which is running the spark master to start the thrift server, the total of executor cores *--total-executor-cores* is according to your spark cluster environment, you need provide a vaild number to avoid the spark jobs can not acquire enough resources from culster to run.
+Run following command on the node which is running the spark master to start the thrift server, the total of executor cores *--total-executor-cores* is according to your spark cluster environment, you need provide a valid number to avoid the spark jobs can not acquire enough resources from cluster to run.
 ```
 $ sudo -u spark /usr/lib/spark/sbin/start-thriftserver.sh \
 spark://<your spark master ip>:7077 \
