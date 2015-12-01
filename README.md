@@ -24,7 +24,7 @@
 
 There are 3 disks in machines. 2 are SAS and 1 SCSI 140G), which is used to install operating system -> CentOS 6.7 x86_64. Create volumn group (VG) on 2 SAS disks, in case additional disks added later.
 
-## Installation 
+## Installation
 
 ### NTP
 
@@ -276,10 +276,10 @@ $ salt -G 'roles:oozie-client' state.sls cdh.oozie devops
 $ salt -G 'roles:oozie-server' state.sls cdh.oozie devops
 ```
 
-## Post configuration
+## Post Configuration
 
-* Create organization memeber:
-  - Create ldap.ldif, you can reference the [ldap.ldif.example](src/scripts/ldap.ldif.example) as an example, and run command to initialize the organization memebers on *bd003*
+* Create organization member:
+Create ldap.ldif, you can reference the [ldap.ldif.example](src/scripts/ldap.ldif.example) as an example, and run command to initialize the organization memebers on *bd003*
 ```
 $ ldapadd -h localhost -x -D "cn=admin,dc=$host,dc=com" -f ldap.ldif -W
 ```
