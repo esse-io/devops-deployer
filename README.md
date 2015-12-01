@@ -22,7 +22,7 @@
 
 ### Hardware and Operating System CentOS 6.7 x86_64
 
-There are 3 disks in machines. 2 are SAS and 1 SCSI 140G), which is used to install operating system -> CentOS 6.7 x86_64. Create volumn group "VG" on 2 SAS disks, in case additional disks added later.
+There are 3 disks in machines. 2 are SAS and 1 SCSI 140G), which is used to install operating system -> CentOS 6.7 x86_64. Create volumn group (VG) on 2 SAS disks, in case additional disks added later.
 
 ### NTP
 
