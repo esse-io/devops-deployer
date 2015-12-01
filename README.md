@@ -33,7 +33,6 @@ Setup NTP server and sync the system clock on all the machines in the environmen
 
 ### Install and configure the salt-master on Firstbox
   - Install salt master:
-
 ```
 $ yum install -y epel-release
 $ yum install -y salt-master
