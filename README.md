@@ -2,19 +2,19 @@
 
 ## Architecture design
 
-* Data platform architecture
+### Data platform architecture
 
 ![Architecture diagram](images/20150912_dataplatform.png)
 
-* Gerrit review system
+### Gerrit Review System
 
 ![Gerrit review diagram](images/20150815_gerrit.png)
 
-* Log file connector
+### Log File Connector
 
 ![Log file connector diagram](images/20150812_log-connector.png)
 
-* MySQL database connector
+### MySQL Database Connector
 
 ![Sqoop connector diagram](images/20150702_data_platform_data_import.png)
 
