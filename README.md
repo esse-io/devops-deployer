@@ -20,23 +20,25 @@
 
 ## Prerequisite
 
-* Hardware and Operating System CentOS 6.7 x86_64
+### Hardware and Operating System CentOS 6.7 x86_64
+
 There are 3 disks in machines. 2 are SAS and 1 SCSI, which is used to install operating system -> CentOS 6.7 x86_64
 
-* Setup NTP server and sync the system clock on all the machines in your env
+### Setup NTP server and sync the system clock on all the machines in your env
 
-Setup ntp server and ntp client
   - <a href="http://zh888.blog.51cto.com/1684752/1244772" target="_blank">CentOS NTP setup instruction</a>
   - <a href="http://www.thegeekstuff.com/2014/06/linux-ntp-server-client/" target="_blank">How to Install and Configure Linux NTP Server and Client</a>
 
-* Install and configure the salt-master on firstbox
+### Install and configure the salt-master on firstbox
   - Install salt master:
+
 ```
 $ yum install -y epel-release
 $ yum install -y salt-master
 ```
 
   - Add /etc/salt/master.d/devops.conf on firstbox:
+
 ```
 file_roots:
   devops:
@@ -55,25 +57,29 @@ autosign_file: /etc/salt/autosign.conf
   - Run `salt-master -d`
 
 * Install and configure the salt-minion on clients
-  - Install salt minion
 ```
 $ yum install -y epel-release
 $ yum install -y salt-minion
 ```
 
+
   - Update the *master* attribute in /etc/salt/minion to point to the firstbox
   - Run `salt-minion -d -l debug`
 
-* stop salt-master iptables
-  $service iptables stop
-  $chkconfig iptables off
-  $chkconfig --list|grep iptables
+### Stop iptables on salt-master
+```
+$service iptables stop
+$chkconfig iptables off
+$chkconfig --list|grep iptables
+```
 
-* manager authentication key
-  $salt-key -L
-  $salt-key -A or $salt-key -a #minionid#
+### Manage authentication key
+```
+$salt-key -L
+$salt-key -A or $salt-key -a #minionid#
+```
 
-* Install docker on firstbox
+### Install docker on firstbox
 
 We need install docker service on firstbox to setup the docker local registry.
 Before this installation you need uninstall existing docker rpm which will conflicate with this version. *And also please make sure you uninstall the docker rpm on all other nodes*
