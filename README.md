@@ -26,12 +26,12 @@ There are 3 disks in machines. 2 are SAS and 1 SCSI 140G), which is used to inst
 
 ### NTP
 
-Setup NTP server and sync the system clock on all the machines in your env
+Setup NTP server and sync the system clock on all the machines in the environment
 
   - <a href="http://zh888.blog.51cto.com/1684752/1244772" target="_blank">CentOS NTP setup instruction</a>
   - <a href="http://www.thegeekstuff.com/2014/06/linux-ntp-server-client/" target="_blank">How to Install and Configure Linux NTP Server and Client</a>
 
-### Install and configure the salt-master on firstbox
+### Install and configure the salt-master on Firstbox
   - Install salt master:
 
 ```
@@ -68,7 +68,7 @@ $ yum install -y salt-minion
   - Update the *master* attribute in /etc/salt/minion to point to the firstbox
   - Run `salt-minion -d -l debug`
 
-### Stop iptables on salt-master
+* Stop iptables on salt-master
 ```
 $service iptables stop
 $chkconfig iptables off
