@@ -25,18 +25,18 @@ There are 3 disks in machines. 2 are SAS and 1 SCSI, which is used to install op
 
 * Setup NTP server and sync the system clock on all the machines in your env
 
-Following doc may help you to setup ntp server and ntp client
+Setup ntp server and ntp client
   - <a href="http://zh888.blog.51cto.com/1684752/1244772" target="_blank">CentOS NTP setup instruction</a>
   - <a href="http://www.thegeekstuff.com/2014/06/linux-ntp-server-client/" target="_blank">How to Install and Configure Linux NTP Server and Client</a>
 
-* Install and configure the salt-master on fistbox
+* Install and configure the salt-master on firstbox
   - Install salt master:
 ```
 $ yum install -y epel-release
 $ yum install -y salt-master
 ```
 
-  - Add /etc/salt/master.d/devops.conf on firstox:
+  - Add /etc/salt/master.d/devops.conf on firstbox:
 ```
 file_roots:
   devops:
