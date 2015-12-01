@@ -8,7 +8,7 @@
 
 * Gerrit review system
 
-![gerrit review diagram](images/20150815_gerrit.png)
+![Gerrit review diagram](images/20150815_gerrit.png)
 
 * Log file connector
 
@@ -21,6 +21,7 @@
 ## Prerequisite
 
 * Hardware and OS
+There are 3 disks in machines. 2 are SAS and 1 SCSI, which is used to install operating system -> CentOS 6.7 x86_64
 
 * Setup ntp server and sync the system clock on all the machines in your env
 
@@ -75,7 +76,7 @@ $ yum install -y salt-minion
 * Install docker on firstbox
 
 We need install docker service on firstbox to setup the docker local registry.
-Before this installation you need uninstall existing docker rpm which will conflicate with this version. *And also please make sure you uninstall the docker rpm on all other nodes* 
+Before this installation you need uninstall existing docker rpm which will conflicate with this version. *And also please make sure you uninstall the docker rpm on all other nodes*
 ```
 $ wget https://get.docker.com/rpm/1.7.1/centos-6/RPMS/x86_64/docker-engine-1.7.1-1.el6.x86_64.rpm
 $ yum localinstall docker-engine-1.7.1-1.el6.x86_64.rpm
@@ -186,7 +187,7 @@ salt 'bd003.$host.com' -G 'roles:ldap'
 ## Deployment
 
 * Restart docker service before any deployment especially after you mount new local disk to save data
- 
+
 ```   
 $ salt '*' service.restart docker
 ```
@@ -233,7 +234,7 @@ $ salt -G 'roles:hadoop-namenode' state.sls cdh.hadoop devops
 $ salt -G 'roles:hadoop-datanode' state.sls cdh.hadoop devops
 ```
 
-* Deploy sqoop 
+* Deploy sqoop
  notice: create sqoop job must in piller file modifiy databases connectoin  and  name,password        
 ```
 $salt -G "roles:sqoop"  state.sls  cdh.sqoop devops
