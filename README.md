@@ -1,6 +1,6 @@
 # EL BigData Platform Environment Deployer
 
-## Architecture design
+## Architecture Design
 
 ### Data Platform Architecture
 
@@ -23,6 +23,8 @@
 ### Hardware and Operating System CentOS 6.7 x86_64
 
 There are 3 disks in machines. 2 are SAS and 1 SCSI 140G), which is used to install operating system -> CentOS 6.7 x86_64. Create volumn group (VG) on 2 SAS disks, in case additional disks added later.
+
+## Installation 
 
 ### NTP
 
@@ -63,9 +65,9 @@ $ yum install -y epel-release
 $ yum install -y salt-minion
 ```
 
+* Update the *master* attribute in /etc/salt/minion to point to the firstbox
 
-  - Update the *master* attribute in /etc/salt/minion to point to the firstbox
-  - Run `salt-minion -d -l debug`
+* Run `salt-minion -d -l debug`
 
 * Stop iptables on salt-master
 ```
@@ -74,13 +76,13 @@ $chkconfig iptables off
 $chkconfig --list|grep iptables
 ```
 
-### Manage authentication key
+* Manage authentication key
 ```
 $salt-key -L
 $salt-key -A or $salt-key -a #minionid#
 ```
 
-### Install docker on firstbox
+### Install docker on Firstbox
 Before the installation starts, you'd setup docker local registry and remove the installed docker package, if there is, on ALL nodes, to avoid version conflict.
 ```
 $ wget https://get.docker.com/rpm/1.7.1/centos-6/RPMS/x86_64/docker-engine-1.7.1-1.el6.x86_64.rpm
@@ -98,7 +100,7 @@ $ docker run -d -p 5000:5000 \
 -v /data/docker_repo:/var/lib/registry registry
 ```
 
-* Pull the follewing docker images into the local docker registry:
+* Pull the following docker images into the local docker registry:
 Note: The docker-registry.$host.com should be reachable or add it into the /etc/hosts.
 
 Docker Hub Image    |  Tage    | Local Registry Image                              | Tag
@@ -111,7 +113,7 @@ sameersbn/gitlab | 7.13.0 | docker-registry.$host.com:5000/gitlab | 7.13.0
 jenkins | latest | docker-registry.$host.com:5000/jenkins | latest
 logstash | 1.5.4-1 | docker-registry.$host.com:5000/logstash | 1.5.4-1
 
-  - Build gerrit image:
+### Build Gerrit Image:
 ```
 $ git clone https://github.com/idevops-net/ci.git
 $ cd ci/docker/docker-gerrit
@@ -124,7 +126,7 @@ Local Registry Image                              | Tag
 --------------------------------------------------|-------
 docker-registry.$host.com:5000/gerrit           | 0.0.1
 
-  - Build jenkins image:
+### Build Jenkins Image:
 ```
 $ cd ci/docker/docker-jenkins
 $ wget http://apache.arvixe.com/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.zip
@@ -136,7 +138,7 @@ Local Registry Image                              | Tag
 --------------------------------------------------|-------
 docker-registry.$host.com:5000/jenkins           | 0.0.1
 
-  - Build zookeeper image:
+### Build ZooKeeper Image:
 ```
 $ cd ci/docker/docker-zookeeper
 $ docker build -t docker-registry.$host.com:5000/zookeeper:0.0.1 --force-rm=true ./
@@ -147,7 +149,7 @@ Local Registry Image                              | Tag
 --------------------------------------------------|-------
 docker-registry.$host.com:5000/zookeeper | 0.0.1
 
-  - Build kafka image:
+### Build Kafka Image:
 ```
 $ cd ci/docker/docker-kafka
 $ docker build -t docker-registry.$host.com:5000/kafka:0.0.1 --force-rm=true ./
