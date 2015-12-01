@@ -2,7 +2,7 @@
 
 ## Architecture design
 
-### Data platform architecture
+### Data Platform Architecture
 
 ![Architecture diagram](images/20150912_dataplatform.png)
 
@@ -20,13 +20,13 @@
 
 ## Prerequisite
 
-* Hardware and OS
+* Hardware and Operating System CentOS 6.7 x86_64
 There are 3 disks in machines. 2 are SAS and 1 SCSI, which is used to install operating system -> CentOS 6.7 x86_64
 
-* Setup ntp server and sync the system clock on all the machines in your env
+* Setup NTP server and sync the system clock on all the machines in your env
 
 Following doc may help you to setup ntp server and ntp client
-  - <a href="http://zh888.blog.51cto.com/1684752/1244772" target="_blank">centos NTP server setup</a>
+  - <a href="http://zh888.blog.51cto.com/1684752/1244772" target="_blank">CentOS NTP setup instruction</a>
   - <a href="http://www.thegeekstuff.com/2014/06/linux-ntp-server-client/" target="_blank">How to Install and Configure Linux NTP Server and Client</a>
 
 * Install and configure the salt-master on fistbox
