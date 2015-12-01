@@ -80,9 +80,7 @@ $salt-key -A or $salt-key -a #minionid#
 ```
 
 ### Install docker on firstbox
-
-We need install docker service on firstbox to setup the docker local registry.
-Before this installation you need uninstall existing docker rpm which will conflicate with this version. *And also please make sure you uninstall the docker rpm on all other nodes*
+Before the installation starts, you'd setup docker local registry and remove the installed docker package, if there is, on ALL nodes, to avoid version conflict.
 ```
 $ wget https://get.docker.com/rpm/1.7.1/centos-6/RPMS/x86_64/docker-engine-1.7.1-1.el6.x86_64.rpm
 $ yum localinstall docker-engine-1.7.1-1.el6.x86_64.rpm
@@ -99,8 +97,8 @@ $ docker run -d -p 5000:5000 \
 -v /data/docker_repo:/var/lib/registry registry
 ```
 
-* Pull the follwing docker images into the local docker registry:
-```Note: The docker-registry.$host.com should be reachable or add it into the /etc/hosts. ```
+* Pull the follewing docker images into the local docker registry:
+Note: The docker-registry.$host.com should be reachable or add it into the /etc/hosts.
 
 Docker Hub Image    |  Tage    | Local Registry Image                              | Tag
 --------------------|----------|---------------------------------------------------|-------
@@ -143,6 +141,7 @@ $ cd ci/docker/docker-zookeeper
 $ docker build -t docker-registry.$host.com:5000/zookeeper:0.0.1 --force-rm=true ./
 $ docker push docker-registry.$host.com:5000/zookeeper:0.0.1
 ```
+
 Local Registry Image                              | Tag
 --------------------------------------------------|-------
 docker-registry.$host.com:5000/zookeeper | 0.0.1
@@ -153,9 +152,10 @@ $ cd ci/docker/docker-kafka
 $ docker build -t docker-registry.$host.com:5000/kafka:0.0.1 --force-rm=true ./
 $ docker push docker-registry.$host.com:5000/kafka:0.0.1
 ```
+
 Local Registry Image                              | Tag
 --------------------------------------------------|-------
-docker-registry.$host.com:5000/kafka | 0.0.1
+docker-registry.$host.com:5000/kafka      | 0.0.1
 
 ## Configuration
 
