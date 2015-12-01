@@ -283,7 +283,7 @@ Create ldap.ldif, you can reference the [ldap.ldif.example](src/scripts/ldap.ldi
 ```
 $ ldapadd -h localhost -x -D "cn=admin,dc=$host,dc=com" -f ldap.ldif -W
 ```
-  - You can login the [Ldap web admin page](https://bd002.$host.com:11443) to change your password, the login DN should be like: *cn=david,ou=people,dc=$host,dc=com*, the login DN of admin should be like: *cn=admin,dc=$host,dc=com*.
+  - You can login the [LDAP web admin page](https://bd002.$host.com:11443) to change your password, the login DN should be like: ```*cn=david,ou=people,dc=$host,dc=com*```, the login DN of admin should be like: ```*cn=admin,dc=$host,dc=com*```
 
 * Change the Gitlab default password of root user
 
