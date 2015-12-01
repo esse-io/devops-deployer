@@ -82,7 +82,7 @@ $salt-key -L
 $salt-key -A or $salt-key -a #minionid#
 ```
 
-### Install docker on Firstbox
+### Install Docker on Firstbox
 Before the installation starts, you'd setup docker local registry and remove the installed docker package, if there is, on ALL nodes, to avoid version conflict.
 ```
 $ wget https://get.docker.com/rpm/1.7.1/centos-6/RPMS/x86_64/docker-engine-1.7.1-1.el6.x86_64.rpm
