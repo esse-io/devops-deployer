@@ -73,7 +73,7 @@ $ yum install -y salt-minion
 ```
 $service iptables stop
 $chkconfig iptables off
-$chkconfig --list|grep iptables
+$chkconfig --list | grep iptables
 ```
 
 * Manage authentication key
@@ -207,8 +207,11 @@ $ salt '*' service.restart docker
 $ salt '*' saltutil.refresh_pillar
 $ salt '*' saltutil.sync_modules
 $ salt '*' state.sls salt devops
-Note: after run the above command you need hold on 1 minute at least until salt minion restart finish on all the nodes.
+```
 
+Note: you would have to wait at least 1 minute after running the above commands, until *Salt* minion restarted on all nodes.
+
+```
 $ salt -G 'roles:firstbox' state.sls firstbox devops
 $ salt '*' state.sls salt,docker,ssl-key,ssh-key devops
 ```
@@ -223,14 +226,14 @@ $ salt '*' state.sls java devops
 $ salt -G 'roles:ldap' state.sls ldap,php-ldap-admin devops
 ```
 
-* After deploy ldap successfully, you should follow the (**Create organization memeber**) steps under **Post configuration** to create ldap account before the next deployment.
+* After deploy ldap successfully, you should follow the (**create organization memeber**) steps under **post configuration** to create ldap account before the next deployment.
 
 * Deploy git
 ```
 $ salt -G 'roles:git' state.sls postgresql,redis,gitlab,gerrit devops
 ```
 
-* After deploy gerrit successfult, you should follow the (**Create gerrit admin account**) steps under **Post configuration** to enable 'idevops-ci' as the gerrit administrator before continus.
+* After deploy gerrit successfult, you should follow the (**create gerrit admin account**) steps under **post configuration** to enable 'idevops-ci' as the gerrit administrator before continus.
 
 * Deploy jenkins
 ```
