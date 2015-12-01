@@ -247,18 +247,19 @@ $ salt -G 'roles:hadoop-datanode' state.sls cdh.hadoop devops
 ```
 
 * Deploy sqoop
- notice: create sqoop job must in piller file modifiy databases connectoin  and  name,password        
+
+Notice: create sqoop job must in piller file modify databases connection  and  name,password        
 ```
 $salt -G "roles:sqoop"  state.sls  cdh.sqoop devops
 ```
 
 * Deploy Spark and configure Hive
 ```
-$ salt -G 'roles:spark-master' state.sls apach-spark devops
-$ salt -G 'roles:spark-worker' state.sls apach-spark devops
+$ salt -G 'roles:spark-master' state.sls apache-spark devops
+$ salt -G 'roles:spark-worker' state.sls apache-spark devops
 ```
 
-* Deploy Zookeeper
+* Deploy ZooKeeper
 ```
 $ salt -G 'roles:zookeeper' state.sls zookeeper devops
 ```
@@ -268,12 +269,12 @@ $ salt -G 'roles:zookeeper' state.sls zookeeper devops
 $ salt -G 'roles:kafka' state.sls kafka devops
 ```
 
-* Deploy logstash server
+* Deploy Logstash Server
 ```
 $ salt -G 'roles:logstash-server' state.sls logstash-server devops
 ```
 
-* Deploy oozie
+* Deploy Oozie
 ```
 $ salt -G 'roles:oozie-client' state.sls cdh.oozie devops
 $ salt -G 'roles:oozie-server' state.sls cdh.oozie devops
