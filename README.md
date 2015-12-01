@@ -28,8 +28,8 @@ There are 3 disks in machines. 2 are SAS and 1 SCSI 140G), which is used to inst
 
 Setup NTP server and sync the system clock on all the machines in the environment
 
-[How to Install and Configure Linux NTP](http://www.thegeekstuff.com/2014/06/linux-ntp-server-client/)  
-[Setup NTP on CentOS in Chinese](http://zh888.blog.51cto.com/1684752/1244772)
+- [How to Install and Configure Linux NTP](http://www.thegeekstuff.com/2014/06/linux-ntp-server-client/)  
+- [Setup NTP on CentOS in Chinese](http://zh888.blog.51cto.com/1684752/1244772)
 
 ### Install and configure the salt-master on Firstbox
   - Install salt master:
