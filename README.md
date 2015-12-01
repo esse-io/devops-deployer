@@ -246,7 +246,7 @@ $ salt -G 'roles:hadoop-namenode' state.sls cdh.hadoop devops
 $ salt -G 'roles:hadoop-datanode' state.sls cdh.hadoop devops
 ```
 
-* Deploy sqoop
+* Deploy Sqoop
 
 Notice: create sqoop job must in piller file modify databases connection  and  name,password        
 ```
