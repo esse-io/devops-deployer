@@ -226,14 +226,14 @@ $ salt '*' state.sls java devops
 $ salt -G 'roles:ldap' state.sls ldap,php-ldap-admin devops
 ```
 
-* After deploy ldap successfully, you should follow the (**create organization memeber**) steps under **post configuration** to create ldap account before the next deployment.
+After deploy ldap successfully, you should follow the (**create organization memeber**) steps under **post configuration** to create ldap account before the next deployment.
 
 * Deploy git
 ```
 $ salt -G 'roles:git' state.sls postgresql,redis,gitlab,gerrit devops
 ```
 
-* After deploy gerrit successfult, you should follow the (**create gerrit admin account**) steps under **post configuration** to enable 'idevops-ci' as the gerrit administrator before continus.
+After deploy gerrit successfult, you should follow the (**create gerrit admin account**) steps under **post configuration** to enable 'idevops-ci' as the gerrit administrator before continus.
 
 * Deploy jenkins
 ```
