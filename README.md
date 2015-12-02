@@ -308,7 +308,8 @@ Create gerrit admin account:
   - Add 'idevops-ci' ssh public key into gerrit, you can find it under the ```bd002.$host.com:/data/ssh_keys```
   - Import an existing git project into gerrit
     + First you need create a new project in gerrit, do not select *Create initial empty commit* and *Only serve as parent for other projects*
-    + git clone your existing project from github, for example ```git clone git@github.com:idevops-net/devopes-developer.git```
+    + git clone your existing project from github, for example
+    ```git clone git@github.com:idevops-net/devopes-developer.git```
     + Run the following commands to push your project into gerrit:
 ```
 $ eval $(ssh-agent)
@@ -320,7 +321,7 @@ $ kill ${SSH_AGENT_PID}
 ### Jenkins
 Enable ldap based authentication in jenkins Configure Global Security
   - Follow this guid to enable it: [LDAP plugin](https://wiki.jenkins-ci.org/display/JENKINS/LDAP+Plugin). According to the current environment, the LDAP related info should look like:
-  
+
     ```
     server: ldap://bd002.$host.com
     root DN: dc=$host,dc=com
