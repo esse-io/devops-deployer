@@ -308,7 +308,7 @@ Create gerrit admin account:
   - Add 'idevops-ci' ssh public key into gerrit, you can find it under the ```bd002.$host.com:/data/ssh_keys```
   - Import an existing git project into gerrit
     + First you need create a new project in gerrit, do not select *Create initial empty commit* and *Only serve as parent for other projects*
-    + git clone your existing project from github, for example *git clone git@github.com:idevops-net/devopes-developer.git*
+    + git clone your existing project from github, for example ```git clone git@github.com:idevops-net/devopes-developer.git```
     + Run the following commands to push your project into gerrit:
 ```
 $ eval $(ssh-agent)
@@ -319,19 +319,18 @@ $ kill ${SSH_AGENT_PID}
 
 ### Jenkins
 Enable ldap based authentication in jenkins Configure Global Security
-  - Follow this guid to enable it: [LDAP plugin](https://wiki.jenkins-ci.org/display/JENKINS/LDAP+Plugin)
-    + According to the current environment, the ldap related info should be like following:
+  - Follow this guid to enable it: [LDAP plugin](https://wiki.jenkins-ci.org/display/JENKINS/LDAP+Plugin). According to the current environment, the LDAP related info should look like:
     ```
     server: ldap://bd002.$host.com
     root DN: dc=$host,dc=com
     User search base: ou=people
     user server filter: mail={0}
     ```
-  - And only allow authorized user to access jenkins.
+  - And only allow authorized user to access Jenkins.
 
 ### Create Hive Warehouse in HDFS
 
-Run following commands on your firstbox to create tmp and warehouse in HDFS for Hive.
+Run following commands on your Firstbox to create tmp and warehouse in HDFS for Hive.
 ```
 $ hadoop fs -mkdir       /tmp
 $ hadoop fs -mkdir -p    /user/hive/warehouse
@@ -341,7 +340,7 @@ $ hadoop fs -chmod g+w   /user/hive/warehouse
 
 ### Start Spark SQL Thrift Server
 
-Run following command on the node which is running the spark master to start the thrift server, the total of executor cores *--total-executor-cores* is according to your spark cluster environment, you need provide a valid number to avoid the spark jobs can not acquire enough resources from cluster to run.
+Run following command on the node which is running the spark master to start the thrift server, the total of executor cores ```--total-executor-cores``` is according to your spark cluster environment, you need provide a valid number to avoid the spark jobs can not acquire enough resources from cluster to run.
 ```
 $ sudo -u spark /usr/lib/spark/sbin/start-thriftserver.sh \
 spark://<your spark master ip>:7077 \
