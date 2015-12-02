@@ -320,6 +320,7 @@ $ kill ${SSH_AGENT_PID}
 ### Jenkins
 Enable ldap based authentication in jenkins Configure Global Security
   - Follow this guid to enable it: [LDAP plugin](https://wiki.jenkins-ci.org/display/JENKINS/LDAP+Plugin). According to the current environment, the LDAP related info should look like:
+  
     ```
     server: ldap://bd002.$host.com
     root DN: dc=$host,dc=com
